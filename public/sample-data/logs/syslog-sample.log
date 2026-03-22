@@ -1,0 +1,63 @@
+Mar 15 08:00:01 web-server-01 systemd[1]: Started Session 1024 of user root.
+Mar 15 08:00:05 web-server-01 nginx[2048]: 192.168.1.100 - - [15/Mar/2025:08:00:05 +0900] "GET /api/health HTTP/1.1" 200 42
+Mar 15 08:00:12 web-server-01 app-service[3072]: INFO Processing batch job #4521
+Mar 15 08:00:15 web-server-01 app-service[3072]: INFO Batch job #4521 completed in 2.3s
+Mar 15 08:00:30 web-server-01 kernel: [842563.421] TCP: out of memory -- consider increasing tcp_mem
+Mar 15 08:01:01 web-server-01 CRON[4096]: (root) CMD (/usr/local/bin/health-check.sh)
+Mar 15 08:01:05 web-server-01 app-service[3072]: WARN Connection pool exhausted, waiting for available connection
+Mar 15 08:01:06 web-server-01 app-service[3072]: WARN Connection pool exhausted, waiting for available connection
+Mar 15 08:01:07 web-server-01 app-service[3072]: WARN Connection pool exhausted, waiting for available connection
+Mar 15 08:01:08 web-server-01 app-service[3072]: ERROR Database connection timeout after 30000ms
+Mar 15 08:01:08 web-server-01 app-service[3072]: ERROR Failed to execute query: SELECT * FROM orders WHERE status = 'pending'
+Mar 15 08:01:09 web-server-01 app-service[3072]: ERROR Retry attempt 1/3 for database connection
+Mar 15 08:01:12 web-server-01 app-service[3072]: ERROR Retry attempt 2/3 for database connection
+Mar 15 08:01:15 web-server-01 app-service[3072]: ERROR Retry attempt 3/3 for database connection
+Mar 15 08:01:15 web-server-01 app-service[3072]: FATAL All retry attempts exhausted. Service degraded.
+Mar 15 08:01:16 web-server-01 systemd[1]: app-service.service: Main process exited, code=exited, status=1/FAILURE
+Mar 15 08:01:16 web-server-01 systemd[1]: app-service.service: Failed with result 'exit-code'.
+Mar 15 08:01:20 web-server-01 systemd[1]: app-service.service: Scheduled restart job, restart counter is at 1.
+Mar 15 08:01:21 web-server-01 systemd[1]: Started Application Service.
+Mar 15 08:01:22 web-server-01 app-service[5120]: INFO Application service starting...
+Mar 15 08:01:25 web-server-01 app-service[5120]: INFO Connected to database successfully
+Mar 15 08:01:25 web-server-01 app-service[5120]: INFO Service ready, listening on port 8080
+Mar 15 08:02:00 web-server-01 nginx[2048]: 192.168.1.101 - - [15/Mar/2025:08:02:00 +0900] "POST /api/orders HTTP/1.1" 201 156
+Mar 15 08:02:15 web-server-01 app-service[5120]: INFO Order #78234 created successfully
+Mar 15 08:02:30 web-server-01 app-service[5120]: INFO Processing payment for order #78234
+Mar 15 08:02:45 web-server-01 app-service[5120]: WARN Payment gateway response slow: 4521ms
+Mar 15 08:03:00 web-server-01 app-service[5120]: INFO Payment confirmed for order #78234
+Mar 15 08:03:15 web-server-01 nginx[2048]: 10.0.0.50 - - [15/Mar/2025:08:03:15 +0900] "GET /api/orders/78234 HTTP/1.1" 200 892
+Mar 15 08:04:00 web-server-01 app-service[5120]: INFO Scheduled maintenance check started
+Mar 15 08:04:05 web-server-01 app-service[5120]: WARN Disk usage at 82% on /data partition
+Mar 15 08:04:05 web-server-01 app-service[5120]: WARN Memory usage at 74% - approaching threshold
+Mar 15 08:04:10 web-server-01 app-service[5120]: INFO Maintenance check completed
+Mar 15 08:05:00 web-server-01 CRON[6144]: (root) CMD (/usr/local/bin/log-rotate.sh)
+Mar 15 08:05:01 web-server-01 app-service[5120]: INFO Log rotation triggered
+Mar 15 08:06:00 web-server-01 app-service[5120]: ERROR Failed to send notification email: SMTP connection refused
+Mar 15 08:06:01 web-server-01 app-service[5120]: ERROR SMTP server unreachable at mail.internal:587
+Mar 15 08:06:05 web-server-01 app-service[5120]: WARN Notification queued for retry
+Mar 15 08:07:00 web-server-01 app-service[5120]: INFO Processing batch job #4522
+Mar 15 08:07:30 web-server-01 app-service[5120]: INFO Batch job #4522 completed in 28.7s
+Mar 15 08:07:30 web-server-01 app-service[5120]: WARN Batch job #4522 exceeded expected duration (10s)
+Mar 15 08:08:00 web-server-01 nginx[2048]: 192.168.1.200 - - [15/Mar/2025:08:08:00 +0900] "GET /api/reports/daily HTTP/1.1" 200 45023
+Mar 15 08:08:15 web-server-01 app-service[5120]: INFO Daily report generated: 1,247 orders processed
+Mar 15 08:09:00 web-server-01 app-service[5120]: ERROR OutOfMemoryError: Java heap space
+Mar 15 08:09:00 web-server-01 app-service[5120]: ERROR   at com.samsung.reporting.ReportGenerator.generatePDF(ReportGenerator.java:342)
+Mar 15 08:09:00 web-server-01 app-service[5120]: ERROR   at com.samsung.api.ReportController.export(ReportController.java:89)
+Mar 15 08:09:01 web-server-01 app-service[5120]: FATAL JVM heap exhausted. Triggering emergency GC.
+Mar 15 08:09:05 web-server-01 app-service[5120]: WARN Emergency GC freed 512MB. Heap at 67% now.
+Mar 15 08:09:10 web-server-01 app-service[5120]: INFO Service recovered after emergency GC
+Mar 15 08:10:00 web-server-01 nginx[2048]: 10.0.0.100 - - [15/Mar/2025:08:10:00 +0900] "GET /api/health HTTP/1.1" 200 42
+Mar 15 08:10:00 web-server-01 app-service[5120]: INFO Health check passed
+Mar 15 08:11:00 web-server-01 app-service[5120]: INFO Processing incoming webhook from partner API
+Mar 15 08:11:02 web-server-01 app-service[5120]: WARN Invalid webhook signature detected
+Mar 15 08:11:02 web-server-01 app-service[5120]: ERROR Security: Rejected webhook with invalid signature from IP 203.0.113.50
+Mar 15 08:12:00 web-server-01 app-service[5120]: INFO Scheduled database backup started
+Mar 15 08:12:30 web-server-01 app-service[5120]: INFO Database backup completed: 2.3GB in 30s
+Mar 15 08:13:00 web-server-01 app-service[5120]: INFO Processing batch job #4523
+Mar 15 08:13:05 web-server-01 app-service[5120]: ERROR NullPointerException in batch processor
+Mar 15 08:13:05 web-server-01 app-service[5120]: ERROR   at com.samsung.batch.OrderProcessor.process(OrderProcessor.java:156)
+Mar 15 08:13:06 web-server-01 app-service[5120]: WARN Batch job #4523 failed, scheduling retry
+Mar 15 08:14:00 web-server-01 app-service[5120]: INFO Retrying batch job #4523
+Mar 15 08:14:10 web-server-01 app-service[5120]: INFO Batch job #4523 completed on retry
+Mar 15 08:15:00 web-server-01 kernel: [843463.112] EXT4-fs warning: maximal mount count reached, running e2fsck is recommended
+Mar 15 08:15:00 web-server-01 app-service[5120]: INFO System status: CPU 45%, Memory 67%, Disk 82%
