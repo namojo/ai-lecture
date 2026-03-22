@@ -12,8 +12,15 @@
 
 작업이 **순차적으로** 에이전트를 거치며 처리되는 가장 단순한 패턴입니다.
 
-```
-[입력] → [에이전트 A] → [에이전트 B] → [에이전트 C] → [출력]
+```mermaid
+graph LR
+  Input["📥 입력"] --> A["에이전트 A"] --> B["에이전트 B"] --> C["에이전트 C"] --> Output["📤 출력"]
+
+  style Input fill:#0a1628,stroke:#00b4d8,color:#00b4d8
+  style A fill:#1B2838,stroke:#00b4d8,color:#e0e1dd
+  style B fill:#1B2838,stroke:#00b4d8,color:#e0e1dd
+  style C fill:#1B2838,stroke:#00b4d8,color:#e0e1dd
+  style Output fill:#0a1628,stroke:#22d3ee,color:#22d3ee
 ```
 
 **적합한 상황**: 코드 생성 → 리뷰 → 테스트처럼 단계가 명확히 분리되는 경우
@@ -30,10 +37,24 @@
 
 하나의 입력을 **여러 에이전트가 동시에** 처리하고 결과를 합산합니다.
 
-```
-              ┌→ [보안 에이전트]   →┐
-[입력] → [분배] → [성능 에이전트]   → [수집] → [출력]
-              └→ [스타일 에이전트] →┘
+```mermaid
+graph LR
+  Input["📥 입력"] --> Dist["분배"]
+  Dist --> Sec["🔒 보안 에이전트"]
+  Dist --> Perf["⚡ 성능 에이전트"]
+  Dist --> Style["🎨 스타일 에이전트"]
+  Sec --> Collect["수집"]
+  Perf --> Collect
+  Style --> Collect
+  Collect --> Output["📤 출력"]
+
+  style Input fill:#0a1628,stroke:#00b4d8,color:#00b4d8
+  style Dist fill:#1B2838,stroke:#F59E0B,color:#F59E0B
+  style Sec fill:#1B2838,stroke:#00b4d8,color:#e0e1dd
+  style Perf fill:#1B2838,stroke:#00b4d8,color:#e0e1dd
+  style Style fill:#1B2838,stroke:#00b4d8,color:#e0e1dd
+  style Collect fill:#1B2838,stroke:#F59E0B,color:#F59E0B
+  style Output fill:#0a1628,stroke:#22d3ee,color:#22d3ee
 ```
 
 **적합한 상황**: 동일 코드를 보안/성능/가독성 관점에서 동시에 분석하는 경우
@@ -50,12 +71,22 @@
 
 **오케스트레이터가 작업을 분석하고 적절한 하위 에이전트에게 위임**합니다.
 
-```
-                          ┌→ [코드 분석 에이전트]
-[입력] → [오케스트레이터] ─┼→ [DB 스키마 에이전트]
-                          └→ [인프라 에이전트]
-                               ↓
-                          [오케스트레이터: 결과 종합]
+```mermaid
+graph TD
+  Input["📥 입력"] --> Orch["🎯 오케스트레이터"]
+  Orch --> Code["코드 분석 에이전트"]
+  Orch --> DB["DB 스키마 에이전트"]
+  Orch --> Infra["인프라 에이전트"]
+  Code --> Result["🎯 오케스트레이터: 결과 종합"]
+  DB --> Result
+  Infra --> Result
+
+  style Input fill:#0a1628,stroke:#00b4d8,color:#00b4d8
+  style Orch fill:#1B2838,stroke:#F59E0B,color:#F59E0B
+  style Code fill:#1B2838,stroke:#00b4d8,color:#e0e1dd
+  style DB fill:#1B2838,stroke:#00b4d8,color:#e0e1dd
+  style Infra fill:#1B2838,stroke:#00b4d8,color:#e0e1dd
+  style Result fill:#0a1628,stroke:#22d3ee,color:#22d3ee
 ```
 
 **적합한 상황**: 요청 유형이 다양하고, 어떤 에이전트가 필요한지 사전에 알 수 없는 경우
@@ -79,10 +110,19 @@ function selectAgents(request: string): string[] {
 
 생성과 리뷰를 **품질 기준을 통과할 때까지 반복**합니다.
 
-```
-[입력] → [생성 에이전트] → [리뷰 에이전트] → 통과? → [출력]
-              ↑                    │
-              └── 피드백 ──────────┘  (미통과 시 재생성)
+```mermaid
+graph LR
+  Input["📥 입력"] --> Gen["생성 에이전트"]
+  Gen --> Review["리뷰 에이전트"]
+  Review --> Check{"통과?"}
+  Check -->|Yes| Output["📤 출력"]
+  Check -->|No| Gen
+
+  style Input fill:#0a1628,stroke:#00b4d8,color:#00b4d8
+  style Gen fill:#1B2838,stroke:#00b4d8,color:#e0e1dd
+  style Review fill:#1B2838,stroke:#F59E0B,color:#F59E0B
+  style Check fill:#1B2838,stroke:#22d3ee,color:#22d3ee
+  style Output fill:#0a1628,stroke:#22d3ee,color:#22d3ee
 ```
 
 **적합한 상황**: 코드 품질, 문서 정확성 등 일정 기준을 반드시 충족해야 하는 경우

@@ -10,9 +10,25 @@
 
 로그 분석기를 처음부터 만든다고 가정하고, 하네스 파이프라인을 설계합니다:
 
-```text
-[spec-writer] → [parser-dev] → [ui-dev] → [reviewer]
-    (순차)         (병렬 가능)              (순차)
+```mermaid
+graph LR
+  SW["📋 spec-writer"] --> PD["⚙️ parser-dev"]
+  SW --> UD["🎨 ui-dev"]
+  PD --> RV["🔍 reviewer"]
+  UD --> RV
+
+  SW -.- S1["순차"]
+  PD -.- S2["병렬 가능"]
+  UD -.- S2
+  RV -.- S3["순차"]
+
+  style SW fill:#1B2838,stroke:#F59E0B,color:#F59E0B
+  style PD fill:#1B2838,stroke:#00b4d8,color:#e0e1dd
+  style UD fill:#1B2838,stroke:#00b4d8,color:#e0e1dd
+  style RV fill:#1B2838,stroke:#22d3ee,color:#22d3ee
+  style S1 fill:none,stroke:none,color:#64748b
+  style S2 fill:none,stroke:none,color:#64748b
+  style S3 fill:none,stroke:none,color:#64748b
 ```
 
 ## 에이전트 역할 정의
@@ -77,12 +93,25 @@ types/log.ts의 타입 정의를 참조하여 logParser.ts를 구현합니다.
 
 ## 데이터 흐름
 
-```text
-spec-writer
-  └─ types/log.ts (타입 정의)
-      ├─ parser-dev → logParser.ts (파싱 + 이상탐지)
-      └─ ui-dev → LogAnalyzer.tsx, LogViewer.tsx, LogChart.tsx
-                    └─ import { analyzeLog } from "./logParser"
+```mermaid
+graph TD
+  SW["📋 spec-writer"] --> Types["types/log.ts\n(타입 정의)"]
+  Types --> PD["⚙️ parser-dev"]
+  Types --> UD["🎨 ui-dev"]
+  PD --> LP["logParser.ts\n(파싱 + 이상탐지)"]
+  UD --> LA["LogAnalyzer.tsx"]
+  UD --> LV["LogViewer.tsx"]
+  UD --> LC["LogChart.tsx"]
+  LP -.->|"import { analyzeLog }"| LA
+
+  style SW fill:#1B2838,stroke:#F59E0B,color:#F59E0B
+  style Types fill:#0a1628,stroke:#00b4d8,color:#00b4d8
+  style PD fill:#1B2838,stroke:#00b4d8,color:#e0e1dd
+  style UD fill:#1B2838,stroke:#00b4d8,color:#e0e1dd
+  style LP fill:#111d2c,stroke:#22d3ee,color:#22d3ee
+  style LA fill:#111d2c,stroke:#22d3ee,color:#22d3ee
+  style LV fill:#111d2c,stroke:#22d3ee,color:#22d3ee
+  style LC fill:#111d2c,stroke:#22d3ee,color:#22d3ee
 ```
 
 > [!WARNING] 의존성 순서

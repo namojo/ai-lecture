@@ -67,14 +67,30 @@ networksetup -setairportpower en0 on
 
 ## 전략 4: AI 도구 사용 분리
 
-```text
-[인터넷 환경]           [폐쇄망 환경]
-  ┌─────────┐            ┌──────────┐
-  │ Claude  │  코드생성→  │ 코드 적용  │
-  │ Code    │  ━━━━━━→   │ 빌드      │
-  │ Gemini  │  USB/보안매체│ 테스트    │
-  │ CLI     │            │ 배포      │
-  └─────────┘            └──────────┘
+```mermaid
+graph LR
+  subgraph Internet["🌐 인터넷 환경"]
+    Claude["Claude Code"]
+    Gemini["Gemini CLI"]
+  end
+
+  subgraph Airgap["🔒 폐쇄망 환경"]
+    Apply["코드 적용"]
+    Build["빌드"]
+    Test["테스트"]
+    Deploy["배포"]
+    Apply --> Build --> Test --> Deploy
+  end
+
+  Claude -->|"USB / 보안매체"| Apply
+  Gemini -->|"코드 생성 →"| Apply
+
+  style Claude fill:#1B2838,stroke:#00b4d8,color:#00b4d8
+  style Gemini fill:#1B2838,stroke:#00b4d8,color:#00b4d8
+  style Apply fill:#1B2838,stroke:#22d3ee,color:#e0e1dd
+  style Build fill:#1B2838,stroke:#22d3ee,color:#e0e1dd
+  style Test fill:#1B2838,stroke:#22d3ee,color:#e0e1dd
+  style Deploy fill:#0a1628,stroke:#22c55e,color:#22c55e
 ```
 
 AI 도구는 인터넷이 되는 환경에서 사용하고, 결과물만 폐쇄망으로 이전합니다.

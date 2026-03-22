@@ -3,6 +3,7 @@
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import CodeBlock from "./CodeBlock";
+import MermaidBlock from "./MermaidBlock";
 import TipBox from "./TipBox";
 import type { Components } from "react-markdown";
 
@@ -36,8 +37,8 @@ export default function ChapterView({ content }: ChapterViewProps) {
       const match = /language-(\w+)/.exec(className || "");
       const code = String(children).replace(/\n$/, "");
 
-      // Inline code
-      if (!match) {
+      // Inline code (no language class AND no newlines = inline)
+      if (!match && !code.includes("\n")) {
         return (
           <code
             className="px-1.5 py-0.5 rounded text-sm font-mono bg-[var(--surface-elevated)] text-[var(--accent)]"
@@ -48,8 +49,13 @@ export default function ChapterView({ content }: ChapterViewProps) {
         );
       }
 
-      // Parse highlight lines from meta: ```ts {1,3-5}
-      return <CodeBlock code={code} language={match[1]} />;
+      // Mermaid diagram
+      if (match && match[1] === "mermaid") {
+        return <MermaidBlock chart={code} />;
+      }
+
+      // Code block (with or without language)
+      return <CodeBlock code={code} language={match ? match[1] : "text"} />;
     },
 
     // Wrap pre to avoid double-wrapping

@@ -19,14 +19,26 @@
 
 **설계 과제**: 이 과정을 하네스로 자동화하세요.
 
-```text
-입력: Git PR URL
-출력: 배포 승인/반려 리포트
+```mermaid
+graph TD
+  Input["📥 Git PR URL"] --> Review["🔍 코드 리뷰"]
+  Input --> Security["🔒 보안 점검"]
+  Input --> Perf["⚡ 성능 테스트"]
+  Review --> Merge["📊 결과 종합"]
+  Security --> Merge
+  Perf --> Merge
+  Merge --> Check{"전체 통과?"}
+  Check -->|Yes| Approve["✅ 배포 승인"]
+  Check -->|No| Reject["❌ 배포 반려"]
 
-고려사항:
-- 코드 리뷰, 보안 점검, 성능 테스트는 독립적 (병렬 가능)
-- 하나라도 실패하면 배포 반려
-- 각 점검의 상세 결과를 리포트에 포함
+  style Input fill:#0a1628,stroke:#00b4d8,color:#00b4d8
+  style Review fill:#1B2838,stroke:#00b4d8,color:#e0e1dd
+  style Security fill:#1B2838,stroke:#00b4d8,color:#e0e1dd
+  style Perf fill:#1B2838,stroke:#00b4d8,color:#e0e1dd
+  style Merge fill:#1B2838,stroke:#F59E0B,color:#F59E0B
+  style Check fill:#111d2c,stroke:#22d3ee,color:#22d3ee
+  style Approve fill:#0a1628,stroke:#22c55e,color:#22c55e
+  style Reject fill:#0a1628,stroke:#EF4444,color:#EF4444
 ```
 
 > [!TIP] 설계 힌트
@@ -38,15 +50,21 @@
 
 **설계 과제**: 요구사항 문서 하나로 전체 파이프라인을 자동화하세요.
 
-```text
-입력: 요구사항 문서 (마크다운)
-출력: API 엔드포인트 + 테스트 + Swagger 문서
+```mermaid
+graph TD
+  Input["📥 요구사항 문서\n(마크다운)"] --> Designer["📋 api-designer\nOpenAPI 스펙 생성"]
+  Designer --> Impl["⚙️ implementer\n컨트롤러/서비스 구현"]
+  Designer --> TW["🧪 test-writer\n단위/통합 테스트"]
+  Impl --> Doc["📝 doc-generator\nSwagger 문서 생성"]
+  TW --> Doc
+  Doc --> Output["📤 API 엔드포인트\n+ 테스트 + 문서"]
 
-에이전트 후보:
-- api-designer: OpenAPI 스펙 생성
-- implementer: 컨트롤러/서비스 구현
-- test-writer: 단위/통합 테스트 작성
-- doc-generator: API 문서 생성
+  style Input fill:#0a1628,stroke:#F59E0B,color:#F59E0B
+  style Designer fill:#1B2838,stroke:#00b4d8,color:#e0e1dd
+  style Impl fill:#1B2838,stroke:#00b4d8,color:#e0e1dd
+  style TW fill:#1B2838,stroke:#00b4d8,color:#e0e1dd
+  style Doc fill:#1B2838,stroke:#22d3ee,color:#22d3ee
+  style Output fill:#0a1628,stroke:#22c55e,color:#22c55e
 ```
 
 ## 시나리오 3: 레거시 코드 마이그레이션
@@ -55,17 +73,26 @@
 
 **설계 과제**: 점진적 마이그레이션 하네스를 설계하세요.
 
-```text
-제약사항:
-- 한번에 전체를 변환하면 위험 (점진적 필요)
-- 기존 테스트가 모두 통과해야 함
-- 클래스 간 의존성 순서 고려 필요
+```mermaid
+graph TD
+  Analyze["🔍 의존성 분석"] --> Order["📋 변환 순서 결정"]
+  Order --> Convert["♻️ 리프 클래스부터\n순차 변환"]
+  Convert --> Test{"🧪 테스트\n통과?"}
+  Test -->|Yes| Next{"다음\n클래스?"}
+  Next -->|Yes| Convert
+  Next -->|No| Done["✅ 마이그레이션 완료"]
+  Test -->|No| Rollback["⏪ 롤백"]
+  Rollback --> Fix["🔧 수동 수정"]
+  Fix --> Convert
 
-파이프라인 제안:
-1. 의존성 분석 → 변환 순서 결정
-2. 리프 클래스부터 순차 변환
-3. 각 변환 후 테스트 실행 (게이트)
-4. 실패 시 롤백
+  style Analyze fill:#1B2838,stroke:#F59E0B,color:#F59E0B
+  style Order fill:#1B2838,stroke:#00b4d8,color:#e0e1dd
+  style Convert fill:#1B2838,stroke:#00b4d8,color:#e0e1dd
+  style Test fill:#111d2c,stroke:#22d3ee,color:#22d3ee
+  style Next fill:#111d2c,stroke:#22d3ee,color:#22d3ee
+  style Done fill:#0a1628,stroke:#22c55e,color:#22c55e
+  style Rollback fill:#1B2838,stroke:#EF4444,color:#EF4444
+  style Fix fill:#1B2838,stroke:#F59E0B,color:#F59E0B
 ```
 
 > [!WARNING] 전체 변환 금지

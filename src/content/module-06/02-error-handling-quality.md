@@ -84,11 +84,26 @@ if (!result.success) {
 
 한번에 모든 것을 만들지 않고, 단계별로 검증합니다:
 
-```text
-Step 1: 타입 정의 → 타입 체크 통과?
-Step 2: 핵심 로직 → 단위 테스트 통과?
-Step 3: UI 컴포넌트 → 빌드 성공?
-Step 4: 통합 → 전체 테스트 통과?
+```mermaid
+graph LR
+  S1["Step 1\n타입 정의"] --> G1{"타입 체크\n통과?"}
+  G1 -->|Yes| S2["Step 2\n핵심 로직"]
+  S2 --> G2{"단위 테스트\n통과?"}
+  G2 -->|Yes| S3["Step 3\nUI 컴포넌트"]
+  S3 --> G3{"빌드\n성공?"}
+  G3 -->|Yes| S4["Step 4\n통합"]
+  S4 --> G4{"전체 테스트\n통과?"}
+  G4 -->|Yes| Done["✅ 완료"]
+
+  style S1 fill:#1B2838,stroke:#00b4d8,color:#e0e1dd
+  style S2 fill:#1B2838,stroke:#00b4d8,color:#e0e1dd
+  style S3 fill:#1B2838,stroke:#00b4d8,color:#e0e1dd
+  style S4 fill:#1B2838,stroke:#00b4d8,color:#e0e1dd
+  style G1 fill:#111d2c,stroke:#F59E0B,color:#F59E0B
+  style G2 fill:#111d2c,stroke:#F59E0B,color:#F59E0B
+  style G3 fill:#111d2c,stroke:#F59E0B,color:#F59E0B
+  style G4 fill:#111d2c,stroke:#F59E0B,color:#F59E0B
+  style Done fill:#0a1628,stroke:#22c55e,color:#22c55e
 ```
 
 > [!INFO] 실패 비용 최소화

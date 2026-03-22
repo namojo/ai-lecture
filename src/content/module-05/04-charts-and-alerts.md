@@ -68,17 +68,20 @@ Recharts의 `AreaChart`로 5분 롤링 윈도우 차트를 만듭니다:
 
 알림 패널은 실시간으로 새 알림을 수신하고, 운영자가 수동으로 해제할 수 있습니다:
 
-```text
-┌─ 알림 ──────── 활성 3건 ─┐
-│ 🔴 CPU 사용률              │
-│    임계값 초과: 87.3%       │
-│                    [해제]   │
-│ 🟡 메모리 사용률            │
-│    경고: 72.1%              │
-│                    [해제]   │
-├─ 해제됨 ────────────────────┤
-│ ✅ 네트워크 사용률 (취소선)   │
-└──────────────────────────────┘
+```mermaid
+graph TD
+  subgraph Active["🔔 활성 알림 — 3건"]
+    A1["🔴 CPU 사용률\n임계값 초과: 87.3%\n→ 해제"]
+    A2["🟡 메모리 사용률\n경고: 72.1%\n→ 해제"]
+  end
+  subgraph Resolved["✅ 해제됨"]
+    R1["~~네트워크 사용률~~\n정상 복귀"]
+  end
+  Active --> Resolved
+
+  style A1 fill:#1B2838,stroke:#EF4444,color:#e0e1dd
+  style A2 fill:#1B2838,stroke:#F59E0B,color:#e0e1dd
+  style R1 fill:#111d2c,stroke:#22c55e,color:#94a3b8
 ```
 
 ## 알림 중복 방지

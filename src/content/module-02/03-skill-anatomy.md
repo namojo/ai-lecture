@@ -17,17 +17,28 @@
 
 ## 디렉토리 구조
 
-```
-.claude/skills/
-├── review-code/
-│   ├── skill.md              # 스킬 정의 파일
-│   └── references/           # 참조 자료 디렉토리
-│       ├── coding-standards.md
-│       └── security-checklist.md
-└── generate-test/
-    ├── skill.md
-    └── references/
-        └── test-patterns.md
+```mermaid
+graph LR
+  Root["📁 .claude/skills"] --> RC["📁 review-code"]
+  Root --> GT["📁 generate-test"]
+  RC --> RCSkill["📄 skill.md"]
+  RC --> RCRef["📁 references"]
+  RCRef --> CS["📄 coding-standards.md"]
+  RCRef --> SC["📄 security-checklist.md"]
+  GT --> GTSkill["📄 skill.md"]
+  GT --> GTRef["📁 references"]
+  GTRef --> TP["📄 test-patterns.md"]
+
+  style Root fill:#1B2838,stroke:#00b4d8,color:#e0e1dd
+  style RC fill:#1B2838,stroke:#00b4d8,color:#e0e1dd
+  style GT fill:#1B2838,stroke:#00b4d8,color:#e0e1dd
+  style RCRef fill:#1B2838,stroke:#00b4d8,color:#e0e1dd
+  style GTRef fill:#1B2838,stroke:#00b4d8,color:#e0e1dd
+  style RCSkill fill:#0a1628,stroke:#00b4d8,color:#00b4d8
+  style GTSkill fill:#0a1628,stroke:#00b4d8,color:#00b4d8
+  style CS fill:#111d2c,stroke:#64748b,color:#94a3b8
+  style SC fill:#111d2c,stroke:#64748b,color:#94a3b8
+  style TP fill:#111d2c,stroke:#64748b,color:#94a3b8
 ```
 
 ## skill.md 프론트매터 필드

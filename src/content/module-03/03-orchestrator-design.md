@@ -19,17 +19,35 @@
 
 실무 프로젝트의 워크플로우는 대부분 **순차 → 병렬 → 순차** 패턴을 따릅니다:
 
-```
-Phase 1: 초기화 (Sequential)
-  └→ 프로젝트 스펙 파싱 → 공통 타입 생성 → 설정 파일 생성
+```mermaid
+graph TD
+  subgraph P1["Phase 1: 초기화 (Sequential)"]
+    Spec["📋 스펙 파싱"] --> Types["타입 생성"] --> Config["설정 파일 생성"]
+  end
+  subgraph P2["Phase 2: 핵심 구현 (Parallel)"]
+    FE["🎨 frontend-agent\nUI 컴포넌트"]
+    BE["⚙️ backend-agent\nAPI 라우트"]
+    TE["🧪 test-agent\n테스트 코드"]
+  end
+  subgraph P3["Phase 3: 통합 (Sequential)"]
+    Merge["🔗 결과 병합"] --> IntTest["통합 테스트"] --> Report["📊 최종 리포트"]
+  end
+  Config --> FE
+  Config --> BE
+  Config --> TE
+  FE --> Merge
+  BE --> Merge
+  TE --> Merge
 
-Phase 2: 핵심 구현 (Parallel)
-  ├→ frontend-agent: UI 컴포넌트 생성
-  ├→ backend-agent: API 라우트 구현
-  └→ test-agent: 테스트 코드 생성
-
-Phase 3: 통합 (Sequential)
-  └→ 결과 병합 → 통합 테스트 실행 → 최종 리포트
+  style Spec fill:#1B2838,stroke:#F59E0B,color:#F59E0B
+  style Types fill:#1B2838,stroke:#F59E0B,color:#F59E0B
+  style Config fill:#1B2838,stroke:#F59E0B,color:#F59E0B
+  style FE fill:#1B2838,stroke:#00b4d8,color:#e0e1dd
+  style BE fill:#1B2838,stroke:#00b4d8,color:#e0e1dd
+  style TE fill:#1B2838,stroke:#00b4d8,color:#e0e1dd
+  style Merge fill:#1B2838,stroke:#22d3ee,color:#22d3ee
+  style IntTest fill:#1B2838,stroke:#22d3ee,color:#22d3ee
+  style Report fill:#0a1628,stroke:#22c55e,color:#22c55e
 ```
 
 > [!WARNING] 병렬 실행 전제조건

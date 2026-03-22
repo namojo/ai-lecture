@@ -26,20 +26,36 @@
 현재: 에이전트를 사람이 정의하고 오케스트레이터를 설계
 미래: AI가 요구사항을 분석해 **자동으로 팀 구성과 워크플로우를 설계**
 
-```text
-입력: "주문 관리 시스템을 만들어줘"
-AI: 요구사항 분석 → 에이전트 5명 정의 → 워크플로우 설계 → 실행
+```mermaid
+graph LR
+  Input["💬 주문 관리 시스템을\n만들어줘"] --> Analyze["🧠 요구사항 분석"]
+  Analyze --> Define["👥 에이전트 5명 정의"]
+  Define --> Workflow["📋 워크플로우 설계"]
+  Workflow --> Execute["🚀 실행"]
+
+  style Input fill:#0a1628,stroke:#F59E0B,color:#F59E0B
+  style Analyze fill:#1B2838,stroke:#00b4d8,color:#e0e1dd
+  style Define fill:#1B2838,stroke:#00b4d8,color:#e0e1dd
+  style Workflow fill:#1B2838,stroke:#00b4d8,color:#e0e1dd
+  style Execute fill:#0a1628,stroke:#22c55e,color:#22c55e
 ```
 
 ### 2. MCP (Model Context Protocol) 확장
 
 외부 시스템과 AI를 연결하는 표준 프로토콜:
 
-```text
-Claude Code ←→ MCP ←→ Jira (이슈 관리)
-Claude Code ←→ MCP ←→ Slack (알림)
-Claude Code ←→ MCP ←→ GitHub (PR/이슈)
-Claude Code ←→ MCP ←→ 사내 시스템
+```mermaid
+graph LR
+  CC["Claude Code"] <-->|MCP| Jira["📋 Jira\n이슈 관리"]
+  CC <-->|MCP| Slack["💬 Slack\n알림"]
+  CC <-->|MCP| GH["🐙 GitHub\nPR / 이슈"]
+  CC <-->|MCP| Internal["🏢 사내 시스템"]
+
+  style CC fill:#1B2838,stroke:#00b4d8,color:#00b4d8
+  style Jira fill:#1B2838,stroke:#22d3ee,color:#e0e1dd
+  style Slack fill:#1B2838,stroke:#22d3ee,color:#e0e1dd
+  style GH fill:#1B2838,stroke:#22d3ee,color:#e0e1dd
+  style Internal fill:#1B2838,stroke:#F59E0B,color:#F59E0B
 ```
 
 > [!INFO] MCP의 의미

@@ -12,15 +12,24 @@
 
 Claude Code에서 에이전트는 프로젝트 루트의 `.claude/agents/` 디렉토리에 마크다운 파일로 정의합니다. 파일명이 곧 에이전트의 식별자가 됩니다.
 
-```
-프로젝트/
-├── .claude/
-│   ├── agents/
-│   │   ├── code-reviewer.md      # 코드 리뷰 에이전트
-│   │   ├── test-generator.md     # 테스트 생성 에이전트
-│   │   └── doc-writer.md         # 문서 작성 에이전트
-│   └── settings.json
-└── src/
+```mermaid
+graph LR
+  Root["📁 프로젝트"] --> Claude["📁 .claude"]
+  Root --> Src["📁 src/"]
+  Claude --> Agents["📁 agents"]
+  Claude --> Settings["⚙️ settings.json"]
+  Agents --> CR["📄 code-reviewer.md"]
+  Agents --> TG["📄 test-generator.md"]
+  Agents --> DW["📄 doc-writer.md"]
+
+  style Root fill:#1B2838,stroke:#00b4d8,color:#e0e1dd
+  style Claude fill:#1B2838,stroke:#00b4d8,color:#e0e1dd
+  style Agents fill:#1B2838,stroke:#00b4d8,color:#e0e1dd
+  style Src fill:#111d2c,stroke:#64748b,color:#94a3b8
+  style Settings fill:#111d2c,stroke:#64748b,color:#94a3b8
+  style CR fill:#0a1628,stroke:#00b4d8,color:#00b4d8
+  style TG fill:#0a1628,stroke:#00b4d8,color:#00b4d8
+  style DW fill:#0a1628,stroke:#00b4d8,color:#00b4d8
 ```
 
 ## 프론트매터 필드 해설

@@ -70,9 +70,20 @@
 
 ## 삼성 실무 적용 사례
 
-```
-[코드 PR 제출] → [리뷰 에이전트: 정적 분석] → [보안 에이전트: 취약점 검사]
-                → [문서 에이전트: 변경 이력 생성] → [오케스트레이터: 종합 리포트]
+```mermaid
+graph LR
+  PR["📥 코드 PR 제출"] --> Review["🔍 리뷰 에이전트\n정적 분석"]
+  PR --> Security["🔒 보안 에이전트\n취약점 검사"]
+  PR --> Doc["📝 문서 에이전트\n변경 이력 생성"]
+  Review --> Orch["🎯 오케스트레이터\n종합 리포트"]
+  Security --> Orch
+  Doc --> Orch
+
+  style PR fill:#0a1628,stroke:#00b4d8,color:#00b4d8
+  style Review fill:#1B2838,stroke:#00b4d8,color:#e0e1dd
+  style Security fill:#1B2838,stroke:#00b4d8,color:#e0e1dd
+  style Doc fill:#1B2838,stroke:#00b4d8,color:#e0e1dd
+  style Orch fill:#1B2838,stroke:#22d3ee,color:#22d3ee
 ```
 
 > [!INFO] 다음 챕터 미리보기
